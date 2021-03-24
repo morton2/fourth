@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.List;
@@ -23,7 +24,7 @@ public class ChessResultsTest {
     }
 
     @Test
-    void getCompetitorsNamesFromFileTest(){
+    void getCompetitorsNamesFromFileTest() throws IOException {
         List<String> expected = Arrays.asList(
                 "Lilla Carver",
                 "Andrew Count",
@@ -40,7 +41,7 @@ public class ChessResultsTest {
     }
 
     @Test
-    void correctErrorMessageForFileNotFound(){
+    void correctErrorMessageForFileNotFound() throws IOException {
         ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStreamCaptor));
         chessResults.getCompetitorsNamesFromFile("src/main/resources/notExisting.txt");
