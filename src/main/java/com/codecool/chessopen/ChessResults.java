@@ -6,21 +6,31 @@ import java.util.*;
 public class ChessResults {
 
     private static int yearColumnIndex;
-    private static List<String> valueLines;
+    private static List<String> valueLines = new ArrayList<>();
     private static String[] fields;
     private static int numRows = -1;
-    private static HashMap<Integer, String> hmap = new HashMap<Integer, String>();
+    private static Map<Integer, String> hmap = new HashMap<Integer, String>();
 
-    public List<String> getCompetitorsNamesFromFile(String fileName) throws IOException {
+    public static void main(String[] args) {
+        getCompetitorsNamesFromFile("src/main/resources/results.txt");
+    }
+
+    public static List<String> getCompetitorsNamesFromFile(String fileName) {
         String line;
         File fl = new File(fileName);
-        FileReader frd = new FileReader(fl);
+        FileReader frd = null;
+        try {
+            frd = new FileReader(fl);
         BufferedReader brd = new BufferedReader(frd);
 
         while ((line=brd.readLine())!=null)
             doSomethingWithLine(line);
         brd.close();
         frd.close();
+        } catch (IOException e) {
+            System.out.println("File not found!");
+            e.printStackTrace();
+        }
 
         sortbykey();
 
@@ -39,17 +49,18 @@ public class ChessResults {
         int t4 = Integer.parseInt(fields[4]);
         int t5 = Integer.parseInt(fields[5]);
         hmap.put(t1+t2+t3+t4+t5,t);
+        System.out.println(String.valueOf(hmap.get(t1+t2+t3+t4+t5)));
     }
 
     public static void sortbykey() {
-        // TreeMap to store values of HashMap
-        TreeMap<Integer, String> sorted = new TreeMap<>();
+        TreeMap<Integer, String> sorted = new TreeMap<>(Collections.reverseOrder());
 
         // Copy all data from hashMap into TreeMap
         sorted.putAll(hmap);
 
-        for (HashMap.Entry<Integer, String> entry : sorted.entrySet())
-            valueLines.add(entry.getValue());
+        // Display the TreeMap which is naturally sorted
+        for (Map.Entry<Integer, String> entry : sorted.entrySet())
+            valueLines.add(String.valueOf(entry.getValue()));
     }
 
 
